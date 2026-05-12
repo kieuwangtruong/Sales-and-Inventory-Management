@@ -1,0 +1,91 @@
+version: '3.9'
+
+# ─── Volumes ────────────────────────────────────────────────────────────────────
+volumes:
+  sqldata_user:
+  sqldata_report:
+
+# ─── Networks ────────────────────────────────────────────────────────────────────
+networks:
+  retail-net:
+    driver: bridge
+
+services:
+
+  # ── SQL Server cho User/Auth Service ─────────────────────────────────────────
+  sqlserver_user:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD:          "YourPassword123!"
+      ACCEPT_EULA:          "Y"
+      MSSQL_PID:            "Developer"
+    volumes:
+      - sqldata_user:/var/opt/mssql
+    networks: [retail-net]
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourPassword123! -Q 'SELECT 1'"]
+      interval: 10s
+      retries: 10
+      start_period: 30s
+
+  # ── SQL Server cho Report Service ─────────────────────────────────────────────
+  sqlserver_report:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD:          "YourPassword123!"
+      ACCEPT_EULA:          "Y"
+      MSSQL_PID:            "Developer"
+    volumes:
+      - sqldata_report:/var/opt/mssql
+    networks: [retail-net]
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourPassword123! -Q 'SELECT 1'"]
+      interval: 10s
+      retries: 10
+      start_period: 30s
+
+  # ── User / Auth Service ───────────────────────────────────────────────────────
+  userauth-service:
+    build:
+      context: ./UserAuthService
+      dockerfile: Dockerfile
+    environment:
+      ConnectionStrings__UserDB: >-
+        Server=sqlserver_user;Database=UserDB;User Id=sa;
+        Password=YourPassword123!;TrustServerCertificate=True
+      Jwt__Key:    "SuperSecretKey_ThayDoiKhiDeploy_MinLength32Chars!"
+      Jwt__Issuer: "RetailSystem"
+    ports:
+      - "5001:5001"
+    depends_on:
+      sqlserver_user:
+        condition: service_healthy
+    networks: [retail-net]
+    restart: on-failure
+
+  # ── Report Service ────────────────────────────────────────────────────────────
+  report-service:
+    build:
+      context: ./ReportService
+      dockerfile: Dockerfile
+    environment:
+      ConnectionStrings__ReportDB: >-
+        Server=sqlserver_report;Database=ReportDB;User Id=sa;
+        Password=YourPassword123!;TrustServerCertificate=True
+      Jwt__Key:            "SuperSecretKey_ThayDoiKhiDeploy_MinLength32Chars!"
+      Jwt__Issuer:         "RetailSystem"
+      Services__GatewayUrl: "http://api-gateway:8080"
+    ports:
+      - "5003:5003"
+    depends_on:
+      sqlserver_report:
+        condition: service_healthy
+    networks: [retail-net]
+    restart: on-failure
+
+  # ── (Placeholder) API Gateway ─────────────────────────────────────────────────
+  # Nhóm khác hoặc Gateway chung sẽ điền vào đây
+  # api-gateway:
+  #   image: ...
+  #   ports: ["8080:8080"]
+  #   networks: [retail-net]

@@ -1,0 +1,36 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nhom3", "nhom3", "{CC3891BC-C5ED-F7FA-D919-3F315680EA81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportService", "nhom3\ReportService\ReportService.csproj", "{0FF2088D-C727-E5B4-4BD5-48F0C9BA1107}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserAuthService", "nhom3\UserAuthService\UserAuthService.csproj", "{BBE85EED-5254-FF06-FEE9-C9BDF0464C01}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0FF2088D-C727-E5B4-4BD5-48F0C9BA1107}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FF2088D-C727-E5B4-4BD5-48F0C9BA1107}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FF2088D-C727-E5B4-4BD5-48F0C9BA1107}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FF2088D-C727-E5B4-4BD5-48F0C9BA1107}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBE85EED-5254-FF06-FEE9-C9BDF0464C01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBE85EED-5254-FF06-FEE9-C9BDF0464C01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBE85EED-5254-FF06-FEE9-C9BDF0464C01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBE85EED-5254-FF06-FEE9-C9BDF0464C01}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0FF2088D-C727-E5B4-4BD5-48F0C9BA1107} = {CC3891BC-C5ED-F7FA-D919-3F315680EA81}
+		{BBE85EED-5254-FF06-FEE9-C9BDF0464C01} = {CC3891BC-C5ED-F7FA-D919-3F315680EA81}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6700E320-25CE-4886-AD16-C6E8AC9791D5}
+	EndGlobalSection
+EndGlobal
