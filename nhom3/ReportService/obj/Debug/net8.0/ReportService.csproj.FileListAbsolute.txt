@@ -1,0 +1,8 @@
+/Users/vominhquan/Documents/GitHub/Sales-and-Inventory-Management/nhom3/ReportService/obj/Debug/net8.0/ReportService.csproj.AssemblyReference.cache
+/Users/vominhquan/Documents/GitHub/Sales-and-Inventory-Management/nhom3/ReportService/obj/Debug/net8.0/ReportService.GeneratedMSBuildEditorConfig.editorconfig
+/Users/vominhquan/Documents/GitHub/Sales-and-Inventory-Management/nhom3/ReportService/obj/Debug/net8.0/ReportService.AssemblyInfoInputs.cache
+/Users/vominhquan/Documents/GitHub/Sales-and-Inventory-Management/nhom3/ReportService/obj/Debug/net8.0/ReportService.AssemblyInfo.cs
+/Users/vominhquan/Documents/GitHub/Sales-and-Inventory-Management/nhom3/ReportService/obj/Debug/net8.0/ReportService.csproj.CoreCompileInputs.cache
+/Users/vominhquan/Documents/GitHub/Sales-and-Inventory-Management/nhom3/ReportService/obj/Debug/net8.0/ReportService.MvcApplicationPartsAssemblyInfo.cs
+/Users/vominhquan/Documents/GitHub/Sales-and-Inventory-Management/nhom3/ReportService/obj/Debug/net8.0/ReportService.MvcApplicationPartsAssemblyInfo.cache
+/Users/vominhquan/Documents/GitHub/Sales-and-Inventory-Management/nhom3/ReportService/obj/Debug/net8.0/ReportService.sourcelink.json

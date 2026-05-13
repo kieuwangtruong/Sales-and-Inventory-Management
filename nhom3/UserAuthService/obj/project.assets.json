@@ -4221,19 +4221,19 @@
     ]
   },
   "packageFolders": {
-    "D:\\DevTools\\.nuget\\packages": {}
+    "/Users/vominhquan/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\QLBH\\nhom3\\UserAuthService\\UserAuthService.csproj",
+      "projectUniqueName": "/Users/vominhquan/Documents/GitHub/Sales-and-Inventory-Management/nhom3/UserAuthService/UserAuthService.csproj",
       "projectName": "UserAuthService",
-      "projectPath": "D:\\QLBH\\nhom3\\UserAuthService\\UserAuthService.csproj",
-      "packagesPath": "D:\\DevTools\\.nuget\\packages",
-      "outputPath": "D:\\QLBH\\nhom3\\UserAuthService\\obj\\",
+      "projectPath": "/Users/vominhquan/Documents/GitHub/Sales-and-Inventory-Management/nhom3/UserAuthService/UserAuthService.csproj",
+      "packagesPath": "/Users/vominhquan/.nuget/packages/",
+      "outputPath": "/Users/vominhquan/Documents/GitHub/Sales-and-Inventory-Management/nhom3/UserAuthService/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\TD\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/Users/vominhquan/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -4303,7 +4303,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.417/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.420/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

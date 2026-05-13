@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\QLBH\\nhom3\\ReportService\\ReportService.csproj": {}
+    "/Users/vominhquan/Documents/GitHub/Sales-and-Inventory-Management/nhom3/ReportService/ReportService.csproj": {}
   },
   "projects": {
-    "D:\\QLBH\\nhom3\\ReportService\\ReportService.csproj": {
+    "/Users/vominhquan/Documents/GitHub/Sales-and-Inventory-Management/nhom3/ReportService/ReportService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\QLBH\\nhom3\\ReportService\\ReportService.csproj",
+        "projectUniqueName": "/Users/vominhquan/Documents/GitHub/Sales-and-Inventory-Management/nhom3/ReportService/ReportService.csproj",
         "projectName": "ReportService",
-        "projectPath": "D:\\QLBH\\nhom3\\ReportService\\ReportService.csproj",
-        "packagesPath": "D:\\DevTools\\.nuget\\packages",
-        "outputPath": "D:\\QLBH\\nhom3\\ReportService\\obj\\",
+        "projectPath": "/Users/vominhquan/Documents/GitHub/Sales-and-Inventory-Management/nhom3/ReportService/ReportService.csproj",
+        "packagesPath": "/Users/vominhquan/.nuget/packages/",
+        "outputPath": "/Users/vominhquan/Documents/GitHub/Sales-and-Inventory-Management/nhom3/ReportService/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\TD\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/Users/vominhquan/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -80,7 +80,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.417/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.420/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
