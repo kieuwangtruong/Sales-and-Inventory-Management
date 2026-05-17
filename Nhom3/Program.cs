@@ -1,7 +1,20 @@
+using Microsoft.EntityFrameworkCore;
+using Nhom3.Application.Services;
+using Nhom3.Domain.Interfaces;
+using Nhom3.Infrastructure.Data;
+using Nhom3.Infrastructure.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+var connectionString = "Data Source=nhom3.db";
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlite(connectionString)
+);
+
+builder.Services.AddScoped<IUser, UserRepo>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -15,6 +28,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapControllers();
 
 var summaries = new[]
 {

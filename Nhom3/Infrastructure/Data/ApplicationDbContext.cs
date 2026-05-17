@@ -13,11 +13,12 @@ namespace Nhom3.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
             
-            // Cấu hình quan hệ giữa Order và OrderItem
-            modelBuilder.Entity<User>()
-                .ToTable("Users")
-                .HasKey(u => u.Id)
-                .HasIndex(u => u.Email).IsUnique();
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.ToTable("Users");
+                entity.HasKey(u => u.Id);
+                entity.HasIndex(u => u.Email).IsUnique();
+            });
         }
     }
 }

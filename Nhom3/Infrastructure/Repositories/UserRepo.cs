@@ -1,15 +1,15 @@
-using DemoProject.Domain.Entities;
-using DemoProject.Domain.Interfaces;
-using DemoProject.Infrastructure.Data;
+using Nhom3.Domain.Entities;
+using Nhom3.Domain.Interfaces;
+using Nhom3.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace DemoProject.Infrastructure.Repositories
+namespace Nhom3.Infrastructure.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepo : IUser
     {
         private readonly ApplicationDbContext _context;
 
-        public UserRepository(ApplicationDbContext context)
+        public UserRepo(ApplicationDbContext context)
         {
             _context = context;
         }

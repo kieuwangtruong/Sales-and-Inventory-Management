@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
 namespace Nhom3.Domain.Entities
@@ -32,15 +29,14 @@ namespace Nhom3.Domain.Entities
             throw new NotImplementedException();
         }
 
-        // Constructor and Validation
+        // Constructor
         public User(string userName, string fullName, string email, string passwordHash,
-        DateTime dateOfBirth, Gender sex, string address, bool skipValidation = false)
+        DateTime dateOfBirth, Gender sex, string address)
         {
             UserName = userName;
             FullName = fullName;
             Email = email;
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(passwordHash);
-            PasswordHash = hashedPassword;
+            PasswordHash = passwordHash;
             DateOfBirth = dateOfBirth;
             Sex = sex;
             Address = address;
