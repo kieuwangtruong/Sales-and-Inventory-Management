@@ -62,7 +62,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 // HTTPS redirect
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 // Enable CORS
 app.UseCors("AllowFrontend");
