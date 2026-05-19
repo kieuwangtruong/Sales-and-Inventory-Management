@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 namespace nhom2.Application.Services
 {
     
-    /// business logic liên quan đến Order
-    /// tầng Application - xử lý logic giữa API và Repository
+    // business logic liên quan đến Order
+    // tầng Application - xử lý logic giữa API và Repository
     public class OrderService : IOrderService
     {
         private readonly IOrder _orderRepository;
@@ -22,7 +22,7 @@ namespace nhom2.Application.Services
         }
 
         
-        /// Lấy tất cả đơn hàng
+        // Lấy tất cả đơn hàng
 
         public async Task<List<OrderResponseDto>> GetAllOrdersAsync()
         {
@@ -31,7 +31,7 @@ namespace nhom2.Application.Services
         }
 
         
-        /// Lấy đơn hàng theo ID
+        // Lấy đơn hàng theo ID
 
         public async Task<OrderResponseDto?> GetOrderByIdAsync(int id)
         {
@@ -40,7 +40,7 @@ namespace nhom2.Application.Services
         }
 
         
-        /// Lấy tất cả đơn hàng của một user
+        // Lấy tất cả đơn hàng của một user
 
         public async Task<List<OrderResponseDto>> GetOrdersByUserIdAsync(int userId)
         {
@@ -100,7 +100,7 @@ namespace nhom2.Application.Services
         }
 
         
-        /// Cập nhật trạng thái đơn hàng
+        // Cập nhật trạng thái đơn hàng
 
         public async Task<OrderResponseDto> UpdateOrderAsync(UpdateOrderDto updateOrderDto)
         {
@@ -111,9 +111,12 @@ namespace nhom2.Application.Services
 
             // Cập nhật trạng thái nếu có
             if (!string.IsNullOrEmpty(updateOrderDto.Status))
-            {
-                if (Enum.TryParse<OrderStatus>(updateOrderDto.Status, out var newStatus))
+            {  
+                if (Enum.TryParse<OrderStatus>(updateOrderDto.Status, true, out var newStatus))
                 {
+                    if (!IsValidTransition(order.Status, newStatus))
+                        throw new InvalidOperationException($"Không thể chuyển trạng thái từ '{order.Status}' sang '{newStatus}'");
+
                     order.Status = newStatus;
                 }
                 else
@@ -146,8 +149,24 @@ namespace nhom2.Application.Services
         }
 
         
-        /// Chuyển đổi Order entity thành OrderResponseDto
+        // Luồng tối giản: Pending -> Processing -> Shipped -> Completed; Cancelled là kết thúc
+        private static bool IsValidTransition(OrderStatus currentStatus, OrderStatus newStatus)
+        {
+            if (currentStatus == newStatus)
+                return true;
 
+            return currentStatus switch
+            {
+                OrderStatus.Pending => newStatus == OrderStatus.Processing || newStatus == OrderStatus.Cancelled,
+                OrderStatus.Processing => newStatus == OrderStatus.Shipped || newStatus == OrderStatus.Cancelled,
+                OrderStatus.Shipped => newStatus == OrderStatus.Completed,
+                OrderStatus.Completed => false,
+                OrderStatus.Cancelled => false,
+                _ => false
+            };
+        }
+
+        // Chuyển đổi Order entity thành OrderResponseDto
         private OrderResponseDto MapToDto(Order order)
         {
             return new OrderResponseDto

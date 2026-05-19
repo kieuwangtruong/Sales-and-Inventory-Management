@@ -2981,19 +2981,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/vominhquan/.nuget/packages/": {}
+    "/Users/minhquan/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/vominhquan/Documents/GitHub/Sales-and-Inventory-Management/nhom2/nhom2.csproj",
+      "projectUniqueName": "/Users/minhquan/Documents/Sales-and-Inventory-Management/nhom2/nhom2.csproj",
       "projectName": "nhom2",
-      "projectPath": "/Users/vominhquan/Documents/GitHub/Sales-and-Inventory-Management/nhom2/nhom2.csproj",
-      "packagesPath": "/Users/vominhquan/.nuget/packages/",
-      "outputPath": "/Users/vominhquan/Documents/GitHub/Sales-and-Inventory-Management/nhom2/obj/",
+      "projectPath": "/Users/minhquan/Documents/Sales-and-Inventory-Management/nhom2/nhom2.csproj",
+      "packagesPath": "/Users/minhquan/.nuget/packages/",
+      "outputPath": "/Users/minhquan/Documents/Sales-and-Inventory-Management/nhom2/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/vominhquan/.nuget/NuGet/NuGet.Config"
+        "/Users/minhquan/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -3060,7 +3060,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.420/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.421/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

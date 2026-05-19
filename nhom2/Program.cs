@@ -7,6 +7,8 @@ using nhom2.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.UseUrls("http://0.0.0.0:5000", "https://0.0.0.0:5001");
+
 
 // Đăng ký DbContext với SQLite
 var connectionString = "Data Source=nhom2.db";
@@ -34,11 +36,11 @@ builder.Services.AddSwaggerGen();
 // Thêm CORS (frontend có thể gọi API)
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", builder =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
+        policy.WithOrigins("http://192.168.1.100:5173")
+              .AllowAnyMethod()
+              .AllowAnyHeader();
     });
 });
 
@@ -63,7 +65,7 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
 // Enable CORS
-app.UseCors("AllowAll");
+app.UseCors("AllowFrontend");
 
 // Authentication/Authorization 
 app.UseAuthentication();
@@ -73,5 +75,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 // run app
-Console.WriteLine("Server starting on https://localhost:5001 and http://localhost:5000");
+Console.WriteLine("Server starting on https://0.0.0.0:5001 and http://0.0.0.0:5000");
 app.Run();

@@ -14,6 +14,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IUser, UserRepo>();
 builder.Services.AddScoped<IUserService, UserService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy
+            .WithOrigins("http://192.168.1.100:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -27,9 +38,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowFrontend");
+
 app.UseHttpsRedirection();
 
 app.MapControllers();
+
+app.MapGet("/ping", () => Results.Ok(new { message = "pong" }))
+    .WithName("Ping")
+    .WithOpenApi();
 
 var summaries = new[]
 {
