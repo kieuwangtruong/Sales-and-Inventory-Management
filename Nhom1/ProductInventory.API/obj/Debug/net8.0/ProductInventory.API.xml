@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ProductInventory.API</name>
+    </assembly>
+    <members>
+        <member name="M:ProductInventory.API.Controllers.ProductController.GetAll(System.String,System.String)">
+            <summary>
+            Lấy danh sách tất cả sản phẩm
+            </summary>
+            <param name="danhMuc">Lọc theo danh mục (tuỳ chọn)</param>
+            <param name="tenSanPham">Lọc theo tên sản phẩm (tuỳ chọn)</param>
+        </member>
+        <member name="M:ProductInventory.API.Controllers.ProductController.GetById(System.Int32)">
+            <summary>
+            Lấy thông tin sản phẩm theo ID
+            </summary>
+            <param name="id">Mã ID của sản phẩm</param>
+        </member>
+        <member name="M:ProductInventory.API.Controllers.ProductController.Create(ProductInventory.API.Models.Product)">
+            <summary>
+            Thêm sản phẩm mới vào kho
+            </summary>
+            <param name="product">Thông tin sản phẩm cần thêm</param>
+        </member>
+        <member name="M:ProductInventory.API.Controllers.ProductController.Update(System.Int32,ProductInventory.API.Models.Product)">
+            <summary>
+            Cập nhật thông tin sản phẩm theo ID
+            </summary>
+            <param name="id">Mã ID sản phẩm cần cập nhật</param>
+            <param name="product">Thông tin mới của sản phẩm</param>
+        </member>
+        <member name="M:ProductInventory.API.Controllers.ProductController.Delete(System.Int32)">
+            <summary>
+            Xóa sản phẩm khỏi kho theo ID
+            </summary>
+            <param name="id">Mã ID sản phẩm cần xóa</param>
+        </member>
+        <member name="M:ProductInventory.API.Controllers.ProductController.UpdateInventory(System.Int32,System.Int32)">
+            <summary>
+            Cập nhật số lượng tồn kho của sản phẩm
+            </summary>
+            <param name="id">Mã ID sản phẩm</param>
+            <param name="soLuong">Số lượng cần cập nhật (âm để giảm)</param>
+        </member>
+    </members>
+</doc>
