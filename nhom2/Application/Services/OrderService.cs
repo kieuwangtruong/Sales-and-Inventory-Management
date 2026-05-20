@@ -100,8 +100,6 @@ namespace nhom2.Application.Services
         }
 
         
-        // Cập nhật trạng thái đơn hàng
-
         public async Task<OrderResponseDto> UpdateOrderAsync(UpdateOrderDto updateOrderDto)
         {
             var order = await _orderRepository.GetOrderById(updateOrderDto.Id);
@@ -109,22 +107,53 @@ namespace nhom2.Application.Services
             if (order == null)
                 throw new KeyNotFoundException($"Không tìm thấy Order với ID {updateOrderDto.Id}");
 
-            // Cập nhật trạng thái nếu có
-            if (!string.IsNullOrEmpty(updateOrderDto.Status))
-            {  
-                if (Enum.TryParse<OrderStatus>(updateOrderDto.Status, true, out var newStatus))
-                {
-                    if (!IsValidTransition(order.Status, newStatus))
-                        throw new InvalidOperationException($"Không thể chuyển trạng thái từ '{order.Status}' sang '{newStatus}'");
+            if (updateOrderDto.OrderItems == null || !updateOrderDto.OrderItems.Any())
+                throw new ArgumentException("Đơn hàng phải có ít nhất 1 sản phẩm");
 
-                    order.Status = newStatus;
-                }
-                else
+            order.OrderItems.Clear();
+
+            foreach (var itemDto in updateOrderDto.OrderItems)
+            {
+                var product = MockProductData.GetProductById(itemDto.ProductId);
+                if (product == null)
+                    throw new KeyNotFoundException($"Product với ID {itemDto.ProductId} không tồn tại");
+
+                if (!MockProductData.HasStock(itemDto.ProductId, itemDto.Quantity))
+                    throw new InvalidOperationException($"Product {product.Name} chỉ còn {product.Stock} sản phẩm");
+
+                var orderItem = new OrderItem(itemDto.Quantity, itemDto.Price)
                 {
-                    throw new ArgumentException($"Trạng thái '{updateOrderDto.Status}' không hợp lệ");
-                }
+                    ProductId = itemDto.ProductId
+                };
+
+                order.OrderItems.Add(orderItem);
             }
 
+            order.LastModifiedAt = DateTime.UtcNow;
+
+            await _orderRepository.UpdateOrder(order);
+
+            return MapToDto(order);
+        }
+
+        // Cập nhật trạng thái đơn hàng
+
+        public async Task<OrderResponseDto> UpdateOrderStatusAsync(UpdateOrderStatusDto updateOrderStatusDto)
+        {
+            var order = await _orderRepository.GetOrderById(updateOrderStatusDto.Id);
+
+            if (order == null)
+                throw new KeyNotFoundException($"Không tìm thấy Order với ID {updateOrderStatusDto.Id}");
+
+            if (!Enum.IsDefined(typeof(OrderStatus), updateOrderStatusDto.Status))
+                throw new ArgumentException($"Trạng thái '{updateOrderStatusDto.Status}' không hợp lệ");
+
+            var newStatus = updateOrderStatusDto.Status;
+
+            if (!IsValidTransition(order.Status, newStatus))
+                throw new InvalidOperationException($"Không thể chuyển trạng thái từ '{order.Status}' sang '{newStatus}'");
+
+            order.Status = newStatus;
             order.LastModifiedAt = DateTime.UtcNow;
 
             await _orderRepository.UpdateOrder(order);

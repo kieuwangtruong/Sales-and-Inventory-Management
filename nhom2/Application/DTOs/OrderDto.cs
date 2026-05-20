@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using nhom2.Domain.Entities;
 namespace nhom2.Application.DTOs
 {
     /// <summary>
@@ -18,7 +18,7 @@ namespace nhom2.Application.DTOs
     public class UpdateOrderDto
     {
         public int Id { get; set; }
-        public string? Status { get; set; }
+        public List<OrderItemDto> OrderItems { get; set; } = new();
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ namespace nhom2.Application.DTOs
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public string Status { get; set; }
+        public string? Status { get; set; }
         public decimal Total { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? LastModifiedAt { get; set; }
@@ -55,5 +55,11 @@ namespace nhom2.Application.DTOs
         public int Quantity { get; set; }
         public decimal Price { get; set; }
         public decimal SubTotal { get; set; }
+    }
+
+    public class UpdateOrderStatusDto
+    {
+        public int Id { get; set; }
+        public OrderStatus Status { get; set; }
     }
 }

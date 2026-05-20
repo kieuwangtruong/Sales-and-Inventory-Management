@@ -107,6 +107,42 @@ namespace nhom2.Api.Order
             {
                 return BadRequest(new { success = false, message = ex.Message });
             }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPut("{id}/status")]
+        public async Task<IActionResult> UpdateOrderStatus(int id, [FromBody] UpdateOrderStatusDto updateOrderStatusDto)
+        {
+            try
+            {
+                if (id != updateOrderStatusDto.Id)
+                    return BadRequest(new { success = false, message = "ID không khớp" });
+
+                if (!ModelState.IsValid)
+                    return BadRequest(new { success = false, message = "Dữ liệu không hợp lệ" });
+
+                var order = await _orderService.UpdateOrderStatusAsync(updateOrderStatusDto);
+                return Ok(new { success = true, data = order });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { success = false, message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
             catch (Exception ex)
             {
                 return StatusCode(500, new { success = false, message = ex.Message });
