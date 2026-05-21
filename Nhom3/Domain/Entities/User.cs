@@ -11,6 +11,12 @@ namespace Nhom3.Domain.Entities
         public string Email { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
         public DateTime DateOfBirth { get; set; }
+        public enum UserRole
+        {
+            User = 0,
+            Admin = 1
+        }
+        public UserRole Role { get; set; } = UserRole.User;
         public enum Gender
         {
             [Display(Name = "Nam")]
@@ -40,6 +46,7 @@ namespace Nhom3.Domain.Entities
             DateOfBirth = dateOfBirth;
             Sex = sex;
             Address = address;
+            Role = UserRole.User;
             CreatedAt = DateTime.Now;
             LastModified = null;
         }

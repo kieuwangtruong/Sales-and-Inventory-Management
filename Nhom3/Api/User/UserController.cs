@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nhom3.Application.DTOs;
 using Nhom3.Application.Services;
@@ -19,6 +20,7 @@ namespace Nhom3.Api.User
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllUsers()
         {
              try
@@ -33,6 +35,7 @@ namespace Nhom3.Api.User
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetUserById(int id)
         {
             try
@@ -50,6 +53,7 @@ namespace Nhom3.Api.User
         }
 
         [HttpGet("by-username")]
+        [Authorize]
         public async Task<IActionResult> GetUserByUserName([FromQuery] string userName)
         {
             try
@@ -70,6 +74,7 @@ namespace Nhom3.Api.User
         }
 
         [HttpGet("by-email")]
+        [Authorize]
         public async Task<IActionResult> GetUserByEmail([FromQuery] string email)
         {
             try
@@ -107,6 +112,7 @@ namespace Nhom3.Api.User
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserDto updateUserDto)
         {
             try
@@ -129,6 +135,7 @@ namespace Nhom3.Api.User
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser(int id)
         {
             try
@@ -139,6 +146,31 @@ namespace Nhom3.Api.User
             catch (KeyNotFoundException ex)
             {
                 return NotFound(new { success = false, message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = ex.Message });
+            }
+        }
+        [HttpPost("login")]
+        public async Task<IActionResult> LoginUser([FromBody] LoginRequestDto loginRequestDto)
+        {
+            try
+            {
+                var loginResult = await _userService.LoginUserAsync(loginRequestDto);
+                return Ok(new { success = true, data = loginResult });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { success = false, message = ex.Message });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { success = false, message = ex.Message });
             }
             catch (Exception ex)
             {

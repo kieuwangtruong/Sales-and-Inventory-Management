@@ -128,3 +128,11 @@
 /Users/minhquan/Documents/Sales-and-Inventory-Management/Nhom3/obj/Debug/net8.0/Nhom3.pdb
 /Users/minhquan/Documents/Sales-and-Inventory-Management/Nhom3/obj/Debug/net8.0/Nhom3.genruntimeconfig.cache
 /Users/minhquan/Documents/Sales-and-Inventory-Management/Nhom3/obj/Debug/net8.0/ref/Nhom3.dll
+/Users/minhquan/Documents/Sales-and-Inventory-Management/Nhom3/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/minhquan/Documents/Sales-and-Inventory-Management/Nhom3/bin/Debug/net8.0/Microsoft.IdentityModel.Abstractions.dll
+/Users/minhquan/Documents/Sales-and-Inventory-Management/Nhom3/bin/Debug/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/minhquan/Documents/Sales-and-Inventory-Management/Nhom3/bin/Debug/net8.0/Microsoft.IdentityModel.Logging.dll
+/Users/minhquan/Documents/Sales-and-Inventory-Management/Nhom3/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.dll
+/Users/minhquan/Documents/Sales-and-Inventory-Management/Nhom3/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/minhquan/Documents/Sales-and-Inventory-Management/Nhom3/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
+/Users/minhquan/Documents/Sales-and-Inventory-Management/Nhom3/bin/Debug/net8.0/System.IdentityModel.Tokens.Jwt.dll

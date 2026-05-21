@@ -32,10 +32,21 @@ namespace Nhom3.Application.DTOs
         public string UserName { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
+        public User.UserRole Role { get; set; }
         public DateTime DateOfBirth { get; set; }
         public User.Gender Sex { get; set; }
         public string Address { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public DateTime? LastModified { get; set; }
+    }
+    public class LoginRequestDto
+    {
+        public string Email { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    }
+    public class LoginResponseDto
+    {
+        public string AccessToken { get; set; } = string.Empty;
+        public UserResponseDto User { get; set; } = new();
     }
 }

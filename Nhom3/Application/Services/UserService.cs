@@ -1,9 +1,14 @@
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using Nhom3.Application.DTOs;
 using Nhom3.Domain.Entities;
 using Nhom3.Domain.Interfaces;
-using Nhom3.Application.DTOs;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Nhom3.Application.Services
@@ -11,10 +16,20 @@ namespace Nhom3.Application.Services
     public class UserService : IUserService
     {
         private readonly IUser _userRepository;
+        private readonly string _jwtKey;
+        private readonly string _jwtIssuer;
+        private readonly string _jwtAudience;
+        private readonly int _jwtExpiresMinutes;
 
-        public UserService(IUser userRepository)
+        public UserService(IUser userRepository, IConfiguration configuration)
         {
             _userRepository = userRepository;
+            _jwtKey = configuration["Jwt:Key"] ?? string.Empty;
+            _jwtIssuer = configuration["Jwt:Issuer"] ?? string.Empty;
+            _jwtAudience = configuration["Jwt:Audience"] ?? string.Empty;
+
+            if (!int.TryParse(configuration["Jwt:ExpiresMinutes"], out _jwtExpiresMinutes))
+                _jwtExpiresMinutes = 60;
         }
 
         // Lấy tất cả user
@@ -129,7 +144,66 @@ namespace Nhom3.Application.Services
             await _userRepository.DeleteUser(id);
             return true;
         }
+        
+        public async Task<LoginResponseDto> LoginUserAsync(LoginRequestDto loginRequestDto)
+        {
+            if (loginRequestDto == null)
+                throw new ArgumentException("Dữ liệu đăng nhập không hợp lệ");
 
+            if (string.IsNullOrWhiteSpace(loginRequestDto.Email))
+                throw new ArgumentException("Email không được để trống");
+
+            if (string.IsNullOrWhiteSpace(loginRequestDto.Password))
+                throw new ArgumentException("Password không được để trống");
+
+            var user = await _userRepository.GetUserByEmail(loginRequestDto.Email);
+
+            if (user == null)
+                throw new KeyNotFoundException($"Không tìm thấy User với Email {loginRequestDto.Email}");
+
+            var isPasswordValid = BCrypt.Net.BCrypt.Verify(loginRequestDto.Password, user.PasswordHash);
+            if (!isPasswordValid)
+                throw new UnauthorizedAccessException("Mật khẩu không đúng");
+
+            return new LoginResponseDto
+            {
+                AccessToken = GenerateAccessToken(user),
+                User = MapToDto(user)
+            };
+        }
+
+        private string GenerateAccessToken(User user)
+        {
+            if (string.IsNullOrWhiteSpace(_jwtKey))
+                throw new InvalidOperationException("Jwt:Key is missing");
+
+            if (string.IsNullOrWhiteSpace(_jwtIssuer))
+                throw new InvalidOperationException("Jwt:Issuer is missing");
+
+            if (string.IsNullOrWhiteSpace(_jwtAudience))
+                throw new InvalidOperationException("Jwt:Audience is missing");
+
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+                new Claim(ClaimTypes.Role, user.Role.ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtKey));
+            var credentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: _jwtIssuer,
+                audience: _jwtAudience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(_jwtExpiresMinutes),
+                signingCredentials: credentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
         private static UserResponseDto MapToDto(User user)
         {
             return new UserResponseDto
@@ -138,6 +212,7 @@ namespace Nhom3.Application.Services
                 UserName = user.UserName,
                 FullName = user.FullName,
                 Email = user.Email,
+                Role = user.Role,
                 DateOfBirth = user.DateOfBirth,
                 Sex = user.Sex,
                 Address = user.Address,
@@ -145,6 +220,8 @@ namespace Nhom3.Application.Services
                 LastModified = user.LastModified
             };
         }
+
+        
 
     }
 }

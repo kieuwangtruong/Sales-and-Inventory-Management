@@ -18,6 +18,7 @@ namespace Nhom3.Infrastructure.Data
                 entity.ToTable("Users");
                 entity.HasKey(u => u.Id);
                 entity.HasIndex(u => u.Email).IsUnique();
+                entity.Property(u => u.Role).HasDefaultValue(User.UserRole.User);
             });
         }
     }

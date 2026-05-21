@@ -10,6 +10,7 @@ namespace Nhom3.Application.Services
         Task<UserResponseDto?> GetUserByEmailAsync(string email);
         Task<UserResponseDto> CreateUserAsync(CreateUserDto createUserDto);
         Task<UserResponseDto> UpdateUserAsync(UpdateUserDto updateUserDto);
+        Task<LoginResponseDto> LoginUserAsync(LoginRequestDto loginRequestDto);
         Task<bool> DeleteUserAsync(int id);
     }
 }
