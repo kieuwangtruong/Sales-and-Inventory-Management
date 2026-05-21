@@ -11,6 +11,8 @@ namespace Nhom3.Application.Services
         Task<UserResponseDto> CreateUserAsync(CreateUserDto createUserDto);
         Task<UserResponseDto> UpdateUserAsync(UpdateUserDto updateUserDto);
         Task<LoginResponseDto> LoginUserAsync(LoginRequestDto loginRequestDto);
+        Task<RefreshResponseDto> RefreshAccessTokenAsync(RefreshRequestDto refreshRequestDto);
+        Task LogoutAsync(string accessToken, LogoutRequestDto logoutRequestDto);
         Task<bool> DeleteUserAsync(int id);
     }
 }

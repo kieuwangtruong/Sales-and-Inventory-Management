@@ -8,6 +8,7 @@ namespace Nhom3.Infrastructure.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         
         public DbSet<User> Users { get; set; }
+        public DbSet<BlacklistedToken> BlacklistedTokens { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -19,6 +20,14 @@ namespace Nhom3.Infrastructure.Data
                 entity.HasKey(u => u.Id);
                 entity.HasIndex(u => u.Email).IsUnique();
                 entity.Property(u => u.Role).HasDefaultValue(User.UserRole.User);
+            });
+
+            modelBuilder.Entity<BlacklistedToken>(entity =>
+            {
+                entity.ToTable("BlacklistedTokens");
+                entity.HasKey(t => t.Id);
+                entity.HasIndex(t => t.Jti).IsUnique();
+                entity.HasIndex(t => t.ExpiresAt);
             });
         }
     }

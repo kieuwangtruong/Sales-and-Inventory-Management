@@ -177,5 +177,71 @@ namespace Nhom3.Api.User
                 return StatusCode(500, new { success = false, message = ex.Message });
             }
         }
+
+        [HttpPost("refresh")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshRequestDto refreshRequestDto)
+        {
+            try
+            {
+                var refreshResult = await _userService.RefreshAccessTokenAsync(refreshRequestDto);
+                return Ok(new { success = true, data = refreshResult });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { success = false, message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { success = false, message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost("logout")]
+        [Authorize]
+        public async Task<IActionResult> Logout([FromBody] LogoutRequestDto logoutRequestDto)
+        {
+            try
+            {
+                var accessToken = GetBearerToken();
+                if (string.IsNullOrWhiteSpace(accessToken))
+                    return Unauthorized(new { success = false, message = "Access token không hợp lệ" });
+
+                await _userService.LogoutAsync(accessToken, logoutRequestDto ?? new LogoutRequestDto());
+                return Ok(new { success = true });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { success = false, message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = ex.Message });
+            }
+        }
+
+        private string? GetBearerToken()
+        {
+            var authHeader = Request.Headers["Authorization"].ToString();
+            if (string.IsNullOrWhiteSpace(authHeader))
+                return null;
+
+            const string prefix = "Bearer ";
+            if (!authHeader.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                return null;
+
+            return authHeader.Substring(prefix.Length).Trim();
+        }
     }
 }

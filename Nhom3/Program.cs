@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Nhom3.Application.Services;
 using Nhom3.Domain.Interfaces;
@@ -16,6 +17,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<IUser, UserRepo>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITokenBlacklist, TokenBlacklistRepo>();
 
 builder.Services.AddCors(options =>
 {
@@ -57,6 +59,24 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = jwtAudience,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
             ClockSkew = TimeSpan.FromMinutes(1)
+        };
+        options.Events = new JwtBearerEvents
+        {
+            OnTokenValidated = async context =>
+            {
+                var jti = context.Principal?.FindFirst(JwtRegisteredClaimNames.Jti)?.Value;
+                var tokenType = context.Principal?.FindFirst("typ")?.Value;
+
+                if (string.IsNullOrWhiteSpace(jti) || tokenType != "access")
+                {
+                    context.Fail("Invalid token");
+                    return;
+                }
+
+                var blacklist = context.HttpContext.RequestServices.GetRequiredService<ITokenBlacklist>();
+                if (await blacklist.IsBlacklistedAsync(jti))
+                    context.Fail("Token revoked");
+            }
         };
     });
 

@@ -47,6 +47,23 @@ namespace Nhom3.Application.DTOs
     public class LoginResponseDto
     {
         public string AccessToken { get; set; } = string.Empty;
+        public string RefreshToken { get; set; } = string.Empty;
         public UserResponseDto User { get; set; } = new();
+    }
+
+    public class RefreshRequestDto
+    {
+        public string RefreshToken { get; set; } = string.Empty;
+    }
+
+    public class RefreshResponseDto
+    {
+        public string AccessToken { get; set; } = string.Empty;
+    }
+
+    public class LogoutRequestDto
+    {
+        public string? RefreshToken { get; set; }
+        public string? DeviceId { get; set; }
     }
 }
