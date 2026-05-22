@@ -20,7 +20,7 @@ namespace Nhom3.Api.User
         }
 
         [HttpGet]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllUsers()
         {
              try
@@ -35,7 +35,7 @@ namespace Nhom3.Api.User
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> GetUserById(int id)
         {
             try

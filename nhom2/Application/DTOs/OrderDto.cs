@@ -62,4 +62,5 @@ namespace nhom2.Application.DTOs
         public int Id { get; set; }
         public OrderStatus Status { get; set; }
     }
+    
 }

@@ -10,7 +10,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.WebHost.UseUrls("http://0.0.0.0:5000", "https://0.0.0.0:5001");
 
-
 // Đăng ký DbContext với SQLite
 var connectionString = "Data Source=nhom2.db";
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -24,11 +23,19 @@ builder.Services.AddScoped<IOrder, OrderRepo>();
 // Service
 builder.Services.AddScoped<IOrderService, OrderService>();
 
+builder.Services.AddHttpClient<IUserClient, UserClient>(client =>
+{
+    var baseUrl = builder.Configuration["Services:User:BaseUrl"];
+    if (string.IsNullOrWhiteSpace(baseUrl))
+        throw new InvalidOperationException("Services:User:BaseUrl is not configured.");
+
+    client.BaseAddress = new Uri(baseUrl);
+    client.Timeout = TimeSpan.FromSeconds(10);
+});
+
 // Thêm Controllers - chỉ định rõ Assembly
 builder.Services.AddControllers()
-    .AddApplicationPart(typeof(nhom2.Api.Order.OrderController).Assembly)
-    .AddApplicationPart(typeof(nhom2.Api.Mock.MockUserController).Assembly)
-    .AddApplicationPart(typeof(nhom2.Api.Mock.MockProductController).Assembly);
+    .AddApplicationPart(typeof(nhom2.Api.Order.OrderController).Assembly);
 
 // Thêm Swagger/OpenAPI (tùy chọn, để test API dễ hơn)
 builder.Services.AddEndpointsApiExplorer();

@@ -119,7 +119,37 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowFrontend");
+app.Use(async (context, next) =>
+{
+    if (HttpMethods.IsGet(context.Request.Method))
+    {
+        var path = context.Request.Path;
 
+        var isList = path.Equals("/api/User", StringComparison.OrdinalIgnoreCase);
+        var isById = path.StartsWithSegments("/api/User", out var remaining)
+                     && int.TryParse(remaining.Value.Trim('/'), out _);
+
+        if (isList || isById)
+        {
+            var ip = context.Connection.RemoteIpAddress?.ToString();
+            var allowed = new HashSet<string>
+            {
+                "127.0.0.1",
+                "::1",
+                "192.168.1.10" // IP máy chạy Order service
+            };
+
+            if (ip == null || !allowed.Contains(ip))
+            {
+                context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                await context.Response.WriteAsync("Forbidden");
+                return;
+            }
+        }
+    }
+
+    await next();
+});
 app.UseAuthentication();
 app.UseAuthorization();
 

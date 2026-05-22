@@ -15,10 +15,12 @@ namespace nhom2.Application.Services
     public class OrderService : IOrderService
     {
         private readonly IOrder _orderRepository;
+        private readonly IUserClient _userClient;
 
-        public OrderService(IOrder orderRepository)
+        public OrderService(IOrder orderRepository, IUserClient userClient)
         {
             _orderRepository = orderRepository;
+            _userClient = userClient;
         }
 
         
@@ -60,8 +62,8 @@ namespace nhom2.Application.Services
             if (!createOrderDto.OrderItems.Any())
                 throw new ArgumentException("Đơn hàng phải có ít nhất 1 sản phẩm");
 
-            // Kiểm tra User tồn tại từ Mock data
-            var user = MockUserData.GetUserById(createOrderDto.UserId);
+            // Kiểm tra User tồn tại từ User service
+            var user = await _userClient.GetUserByIdAsync(createOrderDto.UserId);
             if (user == null)
                 throw new KeyNotFoundException($"User với ID {createOrderDto.UserId} không tồn tại");
 
@@ -137,7 +139,6 @@ namespace nhom2.Application.Services
         }
 
         // Cập nhật trạng thái đơn hàng
-
         public async Task<OrderResponseDto> UpdateOrderStatusAsync(UpdateOrderStatusDto updateOrderStatusDto)
         {
             var order = await _orderRepository.GetOrderById(updateOrderStatusDto.Id);
