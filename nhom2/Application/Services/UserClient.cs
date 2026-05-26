@@ -27,7 +27,7 @@ public class UserClient : IUserClient
         response.EnsureSuccessStatusCode();
         return await ReadUserAsync(response);
     }
-
+    // lấy all user khi connected
     public async Task<List<UserDto>> GetUsersAsync()
     {
         var response = await _http.GetAsync("/api/User");
